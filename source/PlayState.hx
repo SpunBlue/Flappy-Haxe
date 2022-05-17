@@ -11,7 +11,6 @@ class PlayState extends FlxState
 	var player:Player;
 
 	var ground:FlxSprite;
-
 	var pipeTop:FlxSprite;
 	var pipeBottom:FlxSprite;
 	var pipePieceBottom:FlxSprite;
@@ -44,7 +43,7 @@ class PlayState extends FlxState
 		add(ground);
 
 		scoreUI = new FlxText(0, 0, FlxG.width, "0");
-		scoreUI.setFormat("Arial", 16, 0xFFFFFFFF, "center");
+		scoreUI.setFormat("Arial", 64, 0xFFFFFFFF, "center");
 		scoreUI.y = FlxG.height - scoreUI.height;
 		add(scoreUI);
 
