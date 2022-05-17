@@ -22,7 +22,7 @@
 	<window if="html5" resizable="false" />
 
 	<!--Desktop-specific-->
-	<window if="desktop" orientation="landscape" fullscreen="false" resizable="true" />
+	<window if="desktop" orientation="landscape" fullscreen="true" resizable="false" />
 
 	<!--Mobile-specific-->
 	<window if="mobile" orientation="portrait" fullscreen="false" width="576" height="1024" resizable="false"/>

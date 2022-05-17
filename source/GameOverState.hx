@@ -4,6 +4,7 @@ import flixel.FlxG;
 import flixel.FlxSprite;
 import flixel.FlxState;
 import flixel.text.FlxText;
+import openfl.system.System;
 
 class GameOverState extends FlxState
 {
@@ -37,6 +38,13 @@ class GameOverState extends FlxState
 		var enterText:FlxText = new FlxText(0, FlxG.height / 2 + 150, FlxG.width, "Press Enter or Tap to Play Again");
 		enterText.setFormat(AssetPaths.prstart__ttf, 20, 0xffffffff, "center");
 		add(enterText);
+
+		// press x to exit
+		#if desktop
+		var exitText:FlxText = new FlxText(0, FlxG.height - 50, FlxG.width, "Press X to Exit");
+		exitText.setFormat(AssetPaths.prstart__ttf, 20, 0xffffffff, "center");
+		add(exitText);
+		#end
 	}
 
 	override public function update(elapsed)
@@ -58,5 +66,10 @@ class GameOverState extends FlxState
 			PlayState.score = 0;
 			FlxG.switchState(new PlayState());
 		}
+
+		#if desktop
+		if (FlxG.keys.anyJustPressed([X, ESCAPE]))
+			System.exit(0);
+		#end
 	}
 }

@@ -4,6 +4,7 @@ import flixel.FlxG;
 import flixel.FlxState;
 import flixel.text.FlxText;
 import flixel.ui.FlxButton;
+import openfl.system.System;
 
 class MainMenuState extends FlxState
 {
@@ -25,6 +26,10 @@ class MainMenuState extends FlxState
 		creditsText.setFormat(AssetPaths.prstart__ttf, 8, 0xFFFFFFFF, "center");
 		add(creditsText);
 
+		// exit game button
+		var exitButton:FlxButton = new FlxButton(FlxG.width - 50, 0, "X", exitGame);
+		add(exitButton);
+
 		// settings button
 		/*var settingsButton:FlxButton = new FlxButton(FlxG.width / 2 - 50, FlxG.height / 2 + 100, "Settings", settingsButt);
 			add(settingsButton); */
@@ -45,5 +50,10 @@ class MainMenuState extends FlxState
 		#if desktop
 		FlxG.switchState(new SettingsState());
 		#end
+	}
+
+	function exitGame()
+	{
+		System.exit(0);
 	}
 }

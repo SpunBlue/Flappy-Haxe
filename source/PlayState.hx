@@ -11,7 +11,6 @@ class PlayState extends FlxState
 {
 	var player:Player;
 
-	var ground:FlxSprite;
 	var pipeTop:FlxSprite;
 	var pipeBottom:FlxSprite;
 	var pipePieceBottom:FlxSprite;
@@ -35,21 +34,13 @@ class PlayState extends FlxState
 	{
 		super.create();
 
-		// create background
 		var backgroundCol:FlxSprite = new FlxSprite().makeGraphic(FlxG.width, FlxG.height, 0xFF96FFFF);
 		add(backgroundCol);
 
-		var background:FlxSprite = new FlxSprite(0, 0, AssetPaths.background__png);
-		background.setGraphicSize(FlxG.width);
+		var background:FlxSprite = new FlxSprite(0, 0, AssetPaths.mobilebg__png);
+		background.setGraphicSize(FlxG.width, FlxG.height);
 		background.updateHitbox();
-		background.setPosition(0, FlxG.height - background.height);
 		add(background);
-
-		ground = new FlxSprite(0, 0, AssetPaths.ground__png);
-		ground.setGraphicSize(FlxG.width);
-		ground.updateHitbox();
-		ground.y = FlxG.height - ground.height;
-		add(ground);
 
 		scoreUI = new FlxText(0, 0, FlxG.width, "0");
 		scoreUI.setFormat(AssetPaths.prstart__ttf, 64, 0xFFFFFFFF, "center");
@@ -57,7 +48,7 @@ class PlayState extends FlxState
 		uiTextGroup.add(scoreUI);
 		add(scoreUI);
 
-		player = new Player(24, FlxG.height * 0.5);
+		player = new Player(FlxG.width * 0.5, FlxG.height * 0.5);
 		add(player);
 
 		createPipe();
@@ -71,7 +62,7 @@ class PlayState extends FlxState
 
 		scoreUI.text = "" + score;
 
-		if (player.y <= 0 || player.y >= FlxG.height - (ground.height * 0.5))
+		if (player.y <= 0 || player.y >= FlxG.height - 124)
 		{
 			FlxG.switchState(new GameOverState());
 		}
