@@ -36,7 +36,13 @@ class PlayState extends FlxState
 		super.create();
 
 		// create background
-		var background:FlxSprite = new FlxSprite().makeGraphic(FlxG.width, FlxG.height, 0xFF96FFFF);
+		var backgroundCol:FlxSprite = new FlxSprite().makeGraphic(FlxG.width, FlxG.height, 0xFF96FFFF);
+		add(backgroundCol);
+
+		var background:FlxSprite = new FlxSprite(0, 0, AssetPaths.background__png);
+		background.setGraphicSize(FlxG.width);
+		background.updateHitbox();
+		background.setPosition(0, FlxG.height - background.height);
 		add(background);
 
 		ground = new FlxSprite(0, 0, AssetPaths.ground__png);

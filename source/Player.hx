@@ -42,11 +42,11 @@ class Player extends FlxSprite
 			acceleration.y = 500;
 		}
 
-		if (velocity.y < 0 && angle > -45)
+		if (velocity.y < 0 && angle > -29)
 		{
 			angle--;
 		}
-		else if (angle < 45 && acceleration.y > 0)
+		else if (angle < 29 && acceleration.y > 0)
 		{
 			angle++;
 		}
