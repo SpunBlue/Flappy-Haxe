@@ -13,6 +13,8 @@ class Player extends FlxSprite
 		loadGraphic(AssetPaths.player__png, false, 32, 32);
 		maxVelocity.y = 500;
 		drag.y = 1600;
+		setSize(16, 16);
+		offset.set(8, 8);
 	}
 
 	public function updateMovement()

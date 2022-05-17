@@ -1,5 +1,6 @@
 package;
 
+import flixel.FlxCamera;
 import flixel.FlxG;
 import flixel.FlxSprite;
 import flixel.FlxState;
@@ -19,6 +20,8 @@ class PlayState extends FlxState
 
 	var pipesGroup = new FlxTypedGroup<FlxSprite>();
 	var pipesDetailGroup = new FlxTypedGroup<FlxSprite>();
+
+	var uiTextGroup = new FlxTypedGroup<FlxText>();
 
 	var allowPipeCreation = true;
 
@@ -45,9 +48,10 @@ class PlayState extends FlxState
 		scoreUI = new FlxText(0, 0, FlxG.width, "0");
 		scoreUI.setFormat("Arial", 64, 0xFFFFFFFF, "center");
 		scoreUI.y = FlxG.height - scoreUI.height;
+		uiTextGroup.add(scoreUI);
 		add(scoreUI);
 
-		player = new Player(20, 20);
+		player = new Player(24, FlxG.height * 0.5);
 		add(player);
 
 		createPipe();
@@ -140,7 +144,6 @@ class PlayState extends FlxState
 		pipeBottom.x = FlxG.width;
 		pipeBottom.y = FlxG.height - pipeBottom.height + 24;
 		pipesGroup.add(pipeBottom);
-		add(pipeBottom);
 
 		pipeTop = new FlxSprite(0, 0, AssetPaths.pipe__png);
 		// pipeTop = new FlxSprite().makeGraphic(96, (FlxG.height - random) - 96, 0xFF37B700);
@@ -148,7 +151,6 @@ class PlayState extends FlxState
 		pipeTop.updateHitbox();
 		pipeTop.x = FlxG.width;
 		pipesGroup.add(pipeTop);
-		add(pipeTop);
 
 		pipePieceBottom = new FlxSprite(0, 0, AssetPaths.pipePiece__png);
 		pipePieceBottom.setGraphicSize(124, 48);
@@ -156,7 +158,6 @@ class PlayState extends FlxState
 		pipePieceBottom.x = pipeBottom.x + (pipeBottom.width * 0.5) - (pipePieceBottom.width * 0.5);
 		pipePieceBottom.y = pipeBottom.y;
 		pipesDetailGroup.add(pipePieceBottom);
-		add(pipePieceBottom);
 
 		pipePieceTop = new FlxSprite(0, 0, AssetPaths.pipePiece__png);
 		pipePieceTop.setGraphicSize(124, 48);
@@ -164,6 +165,14 @@ class PlayState extends FlxState
 		pipePieceTop.x = pipeTop.x + (pipeTop.width * 0.5) - (pipePieceTop.width * 0.5);
 		pipePieceTop.y = pipeTop.y + pipeTop.height - pipePieceTop.height;
 		pipesDetailGroup.add(pipePieceTop);
-		add(pipePieceTop);
+
+		updateLayers();
+	}
+
+	function updateLayers()
+	{
+		add(pipesGroup);
+		add(pipesDetailGroup);
+		add(uiTextGroup);
 	}
 }
