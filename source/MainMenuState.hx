@@ -13,7 +13,7 @@ class MainMenuState extends FlxState
 
 		// create title screen text
 		var titleText:FlxText = new FlxText(0, FlxG.height / 2 - 50, FlxG.width, "FLAPPY HAXE");
-		titleText.setFormat(null, 32, 0xFFFFFFFF, "center");
+		titleText.setFormat(AssetPaths.prstart__ttf, 32, 0xFFFFFFFF, "center");
 		add(titleText);
 
 		// create start game button
@@ -22,7 +22,7 @@ class MainMenuState extends FlxState
 
 		// credits
 		var creditsText:FlxText = new FlxText(0, FlxG.height - 20, FlxG.width, "by: SpunBlue");
-		creditsText.setFormat(null, 8, 0xFFFFFFFF, "center");
+		creditsText.setFormat(AssetPaths.prstart__ttf, 8, 0xFFFFFFFF, "center");
 		add(creditsText);
 
 		// settings button

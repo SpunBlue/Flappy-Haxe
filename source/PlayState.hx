@@ -52,7 +52,7 @@ class PlayState extends FlxState
 		add(ground);
 
 		scoreUI = new FlxText(0, 0, FlxG.width, "0");
-		scoreUI.setFormat("Arial", 64, 0xFFFFFFFF, "center");
+		scoreUI.setFormat(AssetPaths.prstart__ttf, 64, 0xFFFFFFFF, "center");
 		scoreUI.y = FlxG.height - scoreUI.height;
 		uiTextGroup.add(scoreUI);
 		add(scoreUI);

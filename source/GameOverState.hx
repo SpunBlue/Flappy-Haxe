@@ -13,11 +13,11 @@ class GameOverState extends FlxState
 	override public function create()
 	{
 		var gameOverText:FlxText = new FlxText(0, FlxG.height / 2 - 50, FlxG.width, "Game Over");
-		gameOverText.setFormat("NES", 50, 0xffffffff, "center");
+		gameOverText.setFormat(AssetPaths.prstart__ttf, 50, 0xffffffff, "center");
 		add(gameOverText);
 
 		var scoreText:FlxText = new FlxText(0, FlxG.height / 2, FlxG.width, "Score: " + PlayState.score);
-		scoreText.setFormat("NES", 20, 0xffffffff, "center");
+		scoreText.setFormat(AssetPaths.prstart__ttf, 20, 0xffffffff, "center");
 		add(scoreText);
 
 		if (PlayState.score > highScore)
@@ -26,16 +26,16 @@ class GameOverState extends FlxState
 			FlxG.save.flush();
 
 			var newHighScoreText:FlxText = new FlxText(0, FlxG.height / 2 + 100, FlxG.width, "New High Score!");
-			newHighScoreText.setFormat("NES", 20, 0xffffffff, "center");
+			newHighScoreText.setFormat(AssetPaths.prstart__ttf, 20, 0xffffffff, "center");
 			add(newHighScoreText);
 		}
 
 		var highScoreText:FlxText = new FlxText(0, FlxG.height / 2 + 50, FlxG.width, "High Score: " + highScore);
-		highScoreText.setFormat("NES", 20, 0xffffffff, "center");
+		highScoreText.setFormat(AssetPaths.prstart__ttf, 20, 0xffffffff, "center");
 		add(highScoreText);
 
 		var enterText:FlxText = new FlxText(0, FlxG.height / 2 + 150, FlxG.width, "Press Enter or Tap to Play Again");
-		enterText.setFormat("NES", 20, 0xffffffff, "center");
+		enterText.setFormat(AssetPaths.prstart__ttf, 20, 0xffffffff, "center");
 		add(enterText);
 	}
 
