@@ -27,8 +27,10 @@ class MainMenuState extends FlxState
 		add(creditsText);
 
 		// exit game button
+		#if mobile
 		var exitButton:FlxButton = new FlxButton(FlxG.width - 50, 0, "X", exitGame);
 		add(exitButton);
+		#end
 
 		// settings button
 		/*var settingsButton:FlxButton = new FlxButton(FlxG.width / 2 - 50, FlxG.height / 2 + 100, "Settings", settingsButt);

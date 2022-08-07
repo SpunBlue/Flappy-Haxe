@@ -1,2 +1,4 @@
 # Flappy Haxe
-Flappy Haxe is my first actual HaxeFlixel game that i coded all on my own, This game is a clone of Flappy Bird. Please be warned that my code is horrible cuz idk what im doin'.
+Flappy Haxe is (technically) my first ever game made in HaxeFlixel, I used to be a Clickteam Game Developer and after switching to HaxeFlixel i am NEVER switching back.
+
+I love HaxeFlixel! <3

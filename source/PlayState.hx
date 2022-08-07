@@ -1,11 +1,13 @@
 package;
 
+import flixel.util.FlxColor;
 import flixel.FlxCamera;
 import flixel.FlxG;
 import flixel.FlxSprite;
 import flixel.FlxState;
 import flixel.group.FlxGroup;
 import flixel.text.FlxText;
+import flixel.util.FlxTimer;
 
 class PlayState extends FlxState
 {
@@ -17,8 +19,10 @@ class PlayState extends FlxState
 	var pipePieceTop:FlxSprite;
 	var scoreUI:FlxText;
 
+	var creatingPipe:Bool = false;
+
 	var pipesGroup = new FlxTypedGroup<FlxSprite>();
-	var pipesDetailGroup = new FlxTypedGroup<FlxSprite>();
+	var scoreDetectors:Array<FlxSprite> = new Array<FlxSprite>();
 
 	var uiTextGroup = new FlxTypedGroup<FlxText>();
 
@@ -37,10 +41,16 @@ class PlayState extends FlxState
 		var backgroundCol:FlxSprite = new FlxSprite().makeGraphic(FlxG.width, FlxG.height, 0xFF96FFFF);
 		add(backgroundCol);
 
-		var background:FlxSprite = new FlxSprite(0, 0, AssetPaths.mobilebg__png);
+		/*var background:FlxSprite = new FlxSprite(0, 0, AssetPaths.mobilebg__png);
 		background.setGraphicSize(FlxG.width, FlxG.height);
 		background.updateHitbox();
-		add(background);
+		add(background);*/
+
+		var sun:FlxSprite = new FlxSprite(FlxG.width - (128 + 24), 24).makeGraphic(128, 128, FlxColor.YELLOW);
+		add(sun);
+
+		var grass:FlxSprite = new FlxSprite(0, FlxG.height - 64).makeGraphic(FlxG.width, 64, FlxColor.GREEN);
+		add(grass);
 
 		scoreUI = new FlxText(0, 0, FlxG.width, "0");
 		scoreUI.setFormat(AssetPaths.prstart__ttf, 64, 0xFFFFFFFF, "center");
@@ -51,81 +61,63 @@ class PlayState extends FlxState
 		player = new Player(FlxG.width * 0.5, FlxG.height * 0.5);
 		add(player);
 
+		add(pipesGroup);
+		add(uiTextGroup);
+
 		createPipe();
 	}
 
 	override public function update(elapsed:Float)
 	{
-		super.update(elapsed);
-
 		player.updateMovement();
 
+		super.update(elapsed);
+
 		scoreUI.text = "" + score;
+
+		if (!creatingPipe){
+			// create a timer with a function
+			var timer:FlxTimer = new FlxTimer();
+			timer.start(3, function(timer){
+				createPipe();
+				creatingPipe = false;
+			});
+
+			creatingPipe = true;
+		}
+
+		checkPipes();
 
 		if (player.y <= 0 || player.y >= FlxG.height - 124)
 		{
 			FlxG.switchState(new GameOverState());
 		}
+	}
 
-		for (i in 0...pipesGroup.members.length)
-		{
-			if (pipesGroup.members[i] != null)
-			{
-				pipesGroup.members[i].x -= elapsed * 100; // move pipes to the left
+	function checkPipes(){
+		for (member in pipesGroup.members){
+			member.velocity.x = -125;
 
-				if (pipesGroup.members[i].x <= -pipesGroup.members[i].width)
-				{
-					pipesGroup.members[i].kill();
-					pipesGroup.remove(pipesGroup.members[i]);
-					trace("removed pipe");
-
-					prevScore = 0; // reset score!/1/1//!?!?!/1
-					allowPipeCreation = true;
-				}
-
-				if (pipesGroup.members[i] != null && pipesGroup.members[i].x <= FlxG.width * 0.35 && allowPipeCreation)
-				{
-					trace("created new pipe");
-					createPipe();
-					allowPipeCreation = false;
-				}
-			}
-		}
-
-		for (i in 0...pipesDetailGroup.members.length)
-		{
-			if (pipesDetailGroup.members[i] != null)
-			{
-				pipesDetailGroup.members[i].x -= elapsed * 100;
-
-				if (pipesDetailGroup.members[i].x <= -pipesDetailGroup.members[i].width)
-				{
-					pipesDetailGroup.members[i].kill();
-					pipesDetailGroup.remove(pipesDetailGroup.members[i]);
-					trace("removed pipe top");
-				}
-			}
-		}
-
-		// idk any other way to do this cuz i'm too dumb to figure out how to do it
-		for (i in 0...pipesGroup.members.length)
-		{
-			if (pipesGroup.members[i] != null
-				&& pipesGroup.members[i].x <= player.x
-				&& pipesGroup.members[i].x >= player.x - pipesGroup.members[i].width)
-			{
-				if (prevScore != score)
-				{
-					score++;
-					prevScore = score;
-					FlxG.sound.play(AssetPaths.bing__wav);
-				}
-			}
-
-			// game over
-			if (pipesGroup.members[i] != null && player.overlaps(pipesGroup.members[i]))
-			{
+			if (player.overlaps(member)){
 				FlxG.switchState(new GameOverState());
+			}
+
+			if (!member.isOnScreen() && member.x <= 0){
+				member.kill();
+
+				pipesGroup.members.remove(member);
+			}
+		}
+
+		for (scoreDetect in scoreDetectors){
+			scoreDetect.velocity.x = -125;
+
+			if (player.overlaps(scoreDetect)){
+				FlxG.sound.play(AssetPaths.bing__wav, 1, false);
+				score++;
+
+				scoreDetect.kill();
+				scoreDetectors.remove(scoreDetect);
 			}
 		}
 	}
@@ -135,18 +127,16 @@ class PlayState extends FlxState
 		random = FlxG.random.int(384, FlxG.height - 256);
 
 		pipeBottom = new FlxSprite(0, 0, AssetPaths.pipe__png);
-		// pipeBottom = new FlxSprite().makeGraphic(96, random, 0xFF37B700);
 		pipeBottom.setGraphicSize(96, random);
 		pipeBottom.updateHitbox();
-		pipeBottom.x = FlxG.width;
+		pipeBottom.x = FlxG.width + 64;
 		pipeBottom.y = FlxG.height - pipeBottom.height + 24;
 		pipesGroup.add(pipeBottom);
 
 		pipeTop = new FlxSprite(0, 0, AssetPaths.pipe__png);
-		// pipeTop = new FlxSprite().makeGraphic(96, (FlxG.height - random) - 96, 0xFF37B700);
 		pipeTop.setGraphicSize(96, (FlxG.height - random) - 96);
 		pipeTop.updateHitbox();
-		pipeTop.x = FlxG.width;
+		pipeTop.x = FlxG.width + 64;
 		pipesGroup.add(pipeTop);
 
 		pipePieceBottom = new FlxSprite(0, 0, AssetPaths.pipePiece__png);
@@ -154,22 +144,18 @@ class PlayState extends FlxState
 		pipePieceBottom.updateHitbox();
 		pipePieceBottom.x = pipeBottom.x + (pipeBottom.width * 0.5) - (pipePieceBottom.width * 0.5);
 		pipePieceBottom.y = pipeBottom.y;
-		pipesDetailGroup.add(pipePieceBottom);
+		pipesGroup.add(pipePieceBottom);
 
 		pipePieceTop = new FlxSprite(0, 0, AssetPaths.pipePiece__png);
 		pipePieceTop.setGraphicSize(124, 48);
 		pipePieceTop.updateHitbox();
 		pipePieceTop.x = pipeTop.x + (pipeTop.width * 0.5) - (pipePieceTop.width * 0.5);
 		pipePieceTop.y = pipeTop.y + pipeTop.height - pipePieceTop.height;
-		pipesDetailGroup.add(pipePieceTop);
+		pipesGroup.add(pipePieceTop);
 
-		updateLayers();
-	}
-
-	function updateLayers()
-	{
-		add(pipesGroup);
-		add(pipesDetailGroup);
-		add(uiTextGroup);
+		var sillyScore:FlxSprite = new FlxSprite(pipeBottom.x + pipeBottom.width * 0.5, 0).makeGraphic(32, FlxG.height, FlxColor.ORANGE);
+		sillyScore.visible = false;
+		add(sillyScore);
+		scoreDetectors.push(sillyScore);
 	}
 }

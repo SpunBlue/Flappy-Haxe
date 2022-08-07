@@ -11,6 +11,7 @@ class Player extends FlxSprite
 		super(x, y);
 
 		loadGraphic(AssetPaths.player__png, false, 32, 32);
+		antialiasing = true;
 		maxVelocity.y = 500;
 		drag.y = 1600;
 		setSize(16, 16);

@@ -9,6 +9,10 @@ class Main extends Sprite
 	{
 		super();
 
-		addChild(new FlxGame(0, 0, MainMenuState));
+		#if desktop
+		addChild(new FlxGame(0, 0, MainMenuState, 1, 60, 60));
+		#else
+		addChild(new FlxGame(0, 0, MainMenuState, 1, 30, 30));
+		#end
 	}
 }
